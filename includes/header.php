@@ -87,17 +87,17 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="../index.php">🎬 CinemaTicket</a>
+            <a class="navbar-brand" href="/e-ticket_cinema/index.php">🎬 CinemaTicket</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.php">Home</a>
+                        <a class="nav-link" href="/e-ticket_cinema/index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../movies.php">Movies</a>
+                        <a class="nav-link" href="/e-ticket_cinema/movies.php">Movies</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto align-items-center">
@@ -107,20 +107,20 @@ if (session_status() === PHP_SESSION_NONE) {
                                 👤 <?= $_SESSION['name'] ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="../my_tickets.php">🎟️ My Tickets</a></li>
+                                <li><a class="dropdown-item" href="/e-ticket_cinema/my_tickets.php">🎟️ My Tickets</a></li>
                                 <?php if ($_SESSION['role'] === 'admin'): ?>
-                                    <li><a class="dropdown-item" href="../admin/index.php">⚙️ Admin Panel</a></li>
+                                    <li><a class="dropdown-item" href="/e-ticket_cinema/admin/index.php">⚙️ Admin Panel</a></li>
                                 <?php endif; ?>
                                 <li><hr class="dropdown-divider" style="border-color: rgba(245,158,81,0.2);"></li>
-                                <li><a class="dropdown-item text-danger" href="../logout.php">🚪 Logout</a></li>
+                                <li><a class="dropdown-item text-danger" href="/e-ticket_cinema/logout.php">🚪 Logout</a></li>
                             </ul>
                         </li>
                     <?php else: ?>
                         <li class="nav-item me-2">
-                            <a class="nav-link" href="../login.php">Login</a>
+                            <a class="nav-link" href="/e-ticket_cinema/login.php">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn-login-nav" href="../register.php">Register</a>
+                            <a class="btn-login-nav" href="/e-ticket_cinema/register.php">Register</a>
                         </li>
                     <?php endif; ?>
                 </ul>
