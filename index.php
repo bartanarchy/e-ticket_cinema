@@ -2,7 +2,6 @@
 require_once 'config/db.php';
 include 'includes/header.php';
 
-// ini buat ngambil data film terbaru dari database buat ditampilin di halaman utama gi
 $stmt = $pdo->query("SELECT * FROM movies ORDER BY release_date DESC");
 $movies = $stmt->fetchAll();
 ?>
@@ -34,7 +33,7 @@ $movies = $stmt->fetchAll();
                         </div>
                         <div class="movie-info">
                             <h6 class="movie-title"><?= $movie['title'] ?></h6>
-                            <span class="movie-genre"><?= $movie['genre'] ?></span>
+                            <span class="badge-genre"><?= $movie['genre'] ?></span>
                             <p class="movie-duration">⏱ <?= $movie['duration'] ?> min</p>
                         </div>
                     </div>
@@ -56,47 +55,36 @@ $movies = $stmt->fetchAll();
         transition: transform 0.3s, box-shadow 0.3s;
         cursor: pointer;
     }
-
     .movie-card:hover {
         transform: translateY(-8px);
         box-shadow: 0 16px 40px rgba(245,158,81,0.2);
     }
-
     .movie-poster {
         position: relative;
         width: 100%;
         padding-top: 150%;
         overflow: hidden;
     }
-
     .movie-poster img {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         object-fit: cover;
     }
-
     .no-poster {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 4rem;
         background: linear-gradient(145deg, #3A0353, #1a0230);
     }
-
     .movie-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         background: rgba(26,2,48,0.85);
         display: flex;
         align-items: center;
@@ -104,11 +92,7 @@ $movies = $stmt->fetchAll();
         opacity: 0;
         transition: opacity 0.3s;
     }
-
-    .movie-card:hover .movie-overlay {
-        opacity: 1;
-    }
-
+    .movie-card:hover .movie-overlay { opacity: 1; }
     .btn-buy {
         background: linear-gradient(90deg, #F8D299, #F59E51);
         color: #3A0353;
@@ -119,16 +103,8 @@ $movies = $stmt->fetchAll();
         font-size: 0.9rem;
         transition: opacity 0.2s;
     }
-
-    .btn-buy:hover {
-        opacity: 0.85;
-        color: #3A0353;
-    }
-
-    .movie-info {
-        padding: 12px;
-    }
-
+    .btn-buy:hover { opacity: 0.85; color: #3A0353; }
+    .movie-info { padding: 12px; }
     .movie-title {
         color: white;
         font-weight: 700;
@@ -137,16 +113,6 @@ $movies = $stmt->fetchAll();
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
-    .movie-genre {
-        background: rgba(245,158,81,0.2);
-        color: #F59E51;
-        padding: 2px 8px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 500;
-    }
-
     .movie-duration {
         color: rgba(255,255,255,0.5);
         font-size: 0.8rem;

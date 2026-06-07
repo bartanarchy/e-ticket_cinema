@@ -50,168 +50,15 @@ if (isset($_GET['edit'])) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Showtimes - Admin CinemaTicket</title>
+    <title>... - Admin CinemaTicket</title>
     <link href="/e-ticket_cinema/assets/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #3A0353;
-            --secondary: #804A8A;
-            --accent: #F59E51;
-            --accent-light: #F8D299;
-            --dark: #1a0230;
-        }
-        body {
-            background-color: var(--dark);
-            color: white;
-            min-height: 100vh;
-        }
-        .sidebar {
-            width: 250px;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #3A0353, #1a0230);
-            border-right: 1px solid rgba(245,158,81,0.2);
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 20px;
-        }
-        .sidebar-brand {
-            background: linear-gradient(90deg, #F8D299, #F59E51);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            font-size: 1.3rem;
-            padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(245,158,81,0.2);
-            display: block;
-            text-decoration: none;
-        }
-        .sidebar-menu {
-            list-style: none;
-            padding: 20px 0;
-            margin: 0;
-        }
-        .sidebar-menu li a {
-            display: block;
-            padding: 12px 20px;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-        .sidebar-menu li a:hover,
-        .sidebar-menu li a.active {
-            background: rgba(245,158,81,0.1);
-            color: var(--accent);
-            border-left: 3px solid var(--accent);
-        }
-        .main-content {
-            margin-left: 250px;
-            padding: 30px;
-        }
-        .page-title {
-            background: linear-gradient(90deg, #F8D299, #F59E51);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-        }
-        .card-form {
-            background: linear-gradient(145deg, #804A8A33, #3A035366);
-            border: 1px solid rgba(245,158,81,0.2);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 30px;
-        }
-        .form-label {
-            color: var(--accent-light);
-            font-weight: 500;
-        }
-        .form-control, .form-select {
-            background-color: rgba(255,255,255,0.1);
-            border: 1px solid rgba(248,210,153,0.3);
-            color: white;
-            border-radius: 8px;
-        }
-        .form-control::placeholder {
-            color: rgba(255,255,255,0.4);
-        }
-        .form-control:focus, .form-select:focus {
-            background-color: rgba(255,255,255,0.15);
-            border-color: var(--accent);
-            color: white;
-            box-shadow: 0 0 0 0.2rem rgba(245,158,81,0.25);
-        }
-        .form-select option {
-            background-color: var(--primary);
-            color: white;
-        }
-        .btn-submit {
-            background: linear-gradient(90deg, #F8D299, #F59E51);
-            border: none;
-            color: var(--primary);
-            font-weight: 700;
-            border-radius: 8px;
-            padding: 10px 24px;
-            transition: opacity 0.2s;
-        }
-        .btn-submit:hover {
-            opacity: 0.85;
-            color: var(--primary);
-        }
-        .table {
-            color: white;
-            --bs-table-bg: transparent;
-            --bs-table-striped-bg: transparent;
-            --bs-table-hover-bg: rgba(255,255,255,0.05);
-            --bs-table-color: white;
-            --bs-table-border-color: rgba(255,255,255,0.05);
-        }
-        .table > :not(caption) > * > * {
-            background-color: transparent;
-            color: white;
-        }
-        .table thead th {
-            background: rgba(245,158,81,0.1) !important;
-            border-color: rgba(245,158,81,0.2);
-            color: var(--accent);
-        }
-        .table td {
-            border-color: rgba(255,255,255,0.05);
-            vertical-align: middle;
-        }
-        .btn-edit {
-            background: rgba(245,158,81,0.2);
-            color: var(--accent);
-            border: none;
-            border-radius: 6px;
-            padding: 4px 12px;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
-        .btn-edit:hover {
-            background: rgba(245,158,81,0.4);
-            color: var(--accent);
-        }
-        .btn-delete {
-            background: rgba(220,53,69,0.2);
-            color: #ff6b7a;
-            border: none;
-            border-radius: 6px;
-            padding: 4px 12px;
-            font-size: 0.85rem;
-            text-decoration: none;
-        }
-        .btn-delete:hover {
-            background: rgba(220,53,69,0.4);
-            color: #ff6b7a;
-        }
-    </style>
+    <link href="/e-ticket_cinema/assets/css/style.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="sidebar">
         <a href="/e-ticket_cinema/admin/index.php" class="sidebar-brand">⚙️ Admin Panel</a>
@@ -233,9 +80,9 @@ if (isset($_GET['edit'])) {
             <div class="alert border-0 mb-4" style="background-color: rgba(25,135,84,0.2); color: #75e0a7;" id="successAlert">
                 ✅
                 <?php
-                    if ($_GET['success'] === 'added') echo 'Showtime berhasil ditambahkan!';
-                    if ($_GET['success'] === 'updated') echo 'Showtime berhasil diupdate!';
-                    if ($_GET['success'] === 'deleted') echo 'Showtime berhasil dihapus!';
+                if ($_GET['success'] === 'added') echo 'Showtime berhasil ditambahkan!';
+                if ($_GET['success'] === 'updated') echo 'Showtime berhasil diupdate!';
+                if ($_GET['success'] === 'deleted') echo 'Showtime berhasil dihapus!';
                 ?>
             </div>
         <?php endif; ?>
@@ -256,9 +103,9 @@ if (isset($_GET['edit'])) {
                         <select name="movie_id" class="form-select" required>
                             <option value="">Select movie</option>
                             <?php foreach ($movies as $movie): ?>
-                            <option value="<?= $movie['movie_id'] ?>" <?= ($edit_showtime['movie_id'] ?? '') == $movie['movie_id'] ? 'selected' : '' ?>>
-                                <?= $movie['title'] ?>
-                            </option>
+                                <option value="<?= $movie['movie_id'] ?>" <?= ($edit_showtime['movie_id'] ?? '') == $movie['movie_id'] ? 'selected' : '' ?>>
+                                    <?= $movie['title'] ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -309,22 +156,22 @@ if (isset($_GET['edit'])) {
                 </thead>
                 <tbody>
                     <?php foreach ($showtimes as $show): ?>
-                    <tr>
-                        <td><?= $show['title'] ?></td>
-                        <td><?= date('d M Y', strtotime($show['date'])) ?></td>
-                        <td><?= date('H:i', strtotime($show['time'])) ?></td>
-                        <td>Hall <?= $show['hall_number'] ?></td>
-                        <td>Rp <?= number_format($show['price'], 0, ',', '.') ?></td>
-                        <td class="d-flex gap-2">
-                            <a href="showtimes.php?edit=<?= $show['showtime_id'] ?>" class="btn-edit">✏️ Edit</a>
-                            <a href="showtimes.php?delete=<?= $show['showtime_id'] ?>" class="btn-delete" onclick="return confirm('Hapus showtime ini?')">🗑️ Delete</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><?= $show['title'] ?></td>
+                            <td><?= date('d M Y', strtotime($show['date'])) ?></td>
+                            <td><?= date('H:i', strtotime($show['time'])) ?></td>
+                            <td>Hall <?= $show['hall_number'] ?></td>
+                            <td>Rp <?= number_format($show['price'], 0, ',', '.') ?></td>
+                            <td class="d-flex gap-2">
+                                <a href="showtimes.php?edit=<?= $show['showtime_id'] ?>" class="btn-edit">✏️ Edit</a>
+                                <a href="showtimes.php?delete=<?= $show['showtime_id'] ?>" class="btn-delete" onclick="return confirm('Hapus showtime ini?')">🗑️ Delete</a>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                     <?php if (empty($showtimes)): ?>
-                    <tr>
-                        <td colspan="6" class="text-center" style="color: rgba(255,255,255,0.4); padding: 30px;">No showtimes yet</td>
-                    </tr>
+                        <tr>
+                            <td colspan="6" class="text-center" style="color: rgba(255,255,255,0.4); padding: 30px;">No showtimes yet</td>
+                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -343,4 +190,5 @@ if (isset($_GET['edit'])) {
         }, 3000);
     </script>
 </body>
+
 </html>
