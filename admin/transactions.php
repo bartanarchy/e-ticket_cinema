@@ -7,18 +7,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-// mengambil semua transaksi dengan JOIN ke users dan hitung total tiket per transaksi
 $transactions = $pdo->query("
     SELECT transactions.*, users.name as user_name,
     COUNT(tickets.ticket_id) as total_tickets
     FROM transactions
     INNER JOIN users ON transactions.user_id = users.user_id
     LEFT JOIN tickets ON transactions.transaction_id = tickets.transaction_id
-    GROUP BY transactions.transaction_id
+    GROUP BY transactions.transaction_id, transactions.user_id, transactions.transaction_date,
+    transactions.total_amount, transactions.payment_method, users.name
     ORDER BY transactions.transaction_date DESC
 ")->fetchAll();
 
-// Statistik
 $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetchColumn();
 $total_transactions = $pdo->query("SELECT COUNT(*) FROM transactions")->fetchColumn();
 $total_tickets_sold = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = 'booked'")->fetchColumn();
@@ -121,9 +120,18 @@ $total_tickets_sold = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = '
         }
         .table {
             color: white;
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: transparent;
+            --bs-table-hover-bg: rgba(255,255,255,0.05);
+            --bs-table-color: white;
+            --bs-table-border-color: rgba(255,255,255,0.05);
+        }
+        .table > :not(caption) > * > * {
+            background-color: transparent;
+            color: white;
         }
         .table thead th {
-            background: rgba(245,158,81,0.1);
+            background: rgba(245,158,81,0.1) !important;
             border-color: rgba(245,158,81,0.2);
             color: var(--accent);
         }
@@ -165,7 +173,6 @@ $total_tickets_sold = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = '
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="/e-ticket_cinema/admin/index.php" class="sidebar-brand">⚙️ Admin Panel</a>
         <ul class="sidebar-menu">
@@ -179,11 +186,9 @@ $total_tickets_sold = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = '
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <h1 class="page-title">💳 Transactions</h1>
 
-        <!-- Statistik -->
         <div class="row g-4 mb-5">
             <div class="col-md-4">
                 <div class="stat-card">
@@ -208,7 +213,6 @@ $total_tickets_sold = $pdo->query("SELECT COUNT(*) FROM tickets WHERE status = '
             </div>
         </div>
 
-        <!-- Tabel Transaksi -->
         <div style="background: linear-gradient(145deg, #804A8A33, #3A035333); border-radius: 12px; overflow: hidden;">
             <table class="table">
                 <thead>

@@ -14,7 +14,6 @@ if (!isset($_GET['id'])) {
 
 $transaction_id = $_GET['id'];
 
-// GET detail transaksi
 $stmt = $pdo->prepare("
     SELECT transactions.*, users.name as user_name, users.email
     FROM transactions
@@ -29,7 +28,6 @@ if (!$transaction) {
     exit;
 }
 
-// GET tiket dalam transaksi ini
 $stmt = $pdo->prepare("
     SELECT tickets.*, seats.seat_code, movies.title as movie_title,
     showtimes.date as show_date, showtimes.time as show_time,
@@ -138,17 +136,27 @@ $tickets = $stmt->fetchAll();
             font-weight: 500;
         }
         .table {
-            color: white;
-        }
-        .table thead th {
-            background: rgba(245,158,81,0.1);
-            border-color: rgba(245,158,81,0.2);
-            color: var(--accent);
-        }
-        .table td {
-            border-color: rgba(255,255,255,0.05);
-            vertical-align: middle;
-        }
+    color: white;
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+    --bs-table-hover-bg: rgba(255,255,255,0.05);
+    --bs-table-color: white;
+    --bs-table-border-color: rgba(255,255,255,0.05);
+}
+.table > :not(caption) > * > * {
+    background-color: transparent;
+    color: white;
+}
+.table thead th {
+    background: rgba(245,158,81,0.1) !important;
+    border-color: rgba(245,158,81,0.2);
+    color: var(--accent);
+    font-weight: 600;
+}
+.table td {
+    border-color: rgba(255,255,255,0.05);
+    vertical-align: middle;
+}
         .badge-booked {
             background: rgba(25,135,84,0.2);
             color: #75e0a7;
@@ -180,7 +188,6 @@ $tickets = $stmt->fetchAll();
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="/e-ticket_cinema/admin/index.php" class="sidebar-brand">⚙️ Admin Panel</a>
         <ul class="sidebar-menu">
@@ -194,7 +201,6 @@ $tickets = $stmt->fetchAll();
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <div class="d-flex align-items-center gap-3 mb-4">
             <a href="transactions.php" class="btn-back">← Back</a>
@@ -202,7 +208,6 @@ $tickets = $stmt->fetchAll();
         </div>
 
         <div class="row g-4">
-            <!-- Info Transaksi -->
             <div class="col-md-6">
                 <div class="detail-card">
                     <h5 style="color: var(--accent-light); margin-bottom: 15px;">📋 Transaction Info</h5>
@@ -233,7 +238,6 @@ $tickets = $stmt->fetchAll();
                 </div>
             </div>
 
-            <!-- Info User -->
             <div class="col-md-6">
                 <div class="detail-card">
                     <h5 style="color: var(--accent-light); margin-bottom: 15px;">👤 Customer Info</h5>
@@ -249,7 +253,6 @@ $tickets = $stmt->fetchAll();
             </div>
         </div>
 
-        <!-- Tiket -->
         <h5 style="color: var(--accent-light); margin-bottom: 15px;">🎟️ Tickets</h5>
         <div style="background: linear-gradient(145deg, #804A8A33, #3A035333); border-radius: 12px; overflow: hidden;">
             <table class="table">

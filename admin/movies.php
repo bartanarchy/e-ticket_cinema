@@ -7,29 +7,24 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-// ini buat DELETE
 // DELETE
 if (isset($_GET['delete'])) {
     $movie_id = $_GET['delete'];
-
-    // Hapus tickets yang terhubung ke showtimes film ini
+    
     $pdo->prepare("
         DELETE tickets FROM tickets 
         INNER JOIN showtimes ON tickets.showtime_id = showtimes.showtime_id 
         WHERE showtimes.movie_id = ?
     ")->execute([$movie_id]);
-
-    // Hapus showtimes film ini
+    
     $pdo->prepare("DELETE FROM showtimes WHERE movie_id = ?")->execute([$movie_id]);
-
-    // Hapus film
     $pdo->prepare("DELETE FROM movies WHERE movie_id = ?")->execute([$movie_id]);
-
+    
     header('Location: movies.php?success=deleted');
     exit;
 }
 
-// ini buat INSERT
+// INSERT
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'add') {
     $title = $_POST['title'];
     $genre = $_POST['genre'];
@@ -50,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'add') {
     exit;
 }
 
-// ini buat UPDATE
+// UPDATE
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edit') {
     $movie_id = $_POST['movie_id'];
     $title = $_POST['title'];
@@ -76,10 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edit') {
     exit;
 }
 
-// ini buat ngambil semua data film dari database buat ditampilin di tabel gi
 $movies = $pdo->query("SELECT * FROM movies ORDER BY release_date DESC")->fetchAll();
 
-// GET film buat edit
 $edit_movie = null;
 if (isset($_GET['edit'])) {
     $stmt = $pdo->prepare("SELECT * FROM movies WHERE movie_id = ?");
@@ -90,7 +83,6 @@ if (isset($_GET['edit'])) {
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,24 +96,21 @@ if (isset($_GET['edit'])) {
             --accent-light: #F8D299;
             --dark: #1a0230;
         }
-
         body {
             background-color: var(--dark);
             color: white;
             min-height: 100vh;
         }
-
         .sidebar {
             width: 250px;
             min-height: 100vh;
             background: linear-gradient(180deg, #3A0353, #1a0230);
-            border-right: 1px solid rgba(245, 158, 81, 0.2);
+            border-right: 1px solid rgba(245,158,81,0.2);
             position: fixed;
             top: 0;
             left: 0;
             padding-top: 20px;
         }
-
         .sidebar-brand {
             background: linear-gradient(90deg, #F8D299, #F59E51);
             -webkit-background-clip: text;
@@ -129,38 +118,33 @@ if (isset($_GET['edit'])) {
             font-weight: 700;
             font-size: 1.3rem;
             padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(245, 158, 81, 0.2);
+            border-bottom: 1px solid rgba(245,158,81,0.2);
             display: block;
             text-decoration: none;
         }
-
         .sidebar-menu {
             list-style: none;
             padding: 20px 0;
             margin: 0;
         }
-
         .sidebar-menu li a {
             display: block;
             padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255,255,255,0.7);
             text-decoration: none;
             transition: all 0.2s;
             font-weight: 500;
         }
-
         .sidebar-menu li a:hover,
         .sidebar-menu li a.active {
-            background: rgba(245, 158, 81, 0.1);
+            background: rgba(245,158,81,0.1);
             color: var(--accent);
             border-left: 3px solid var(--accent);
         }
-
         .main-content {
             margin-left: 250px;
             padding: 30px;
         }
-
         .page-title {
             background: linear-gradient(90deg, #F8D299, #F59E51);
             -webkit-background-clip: text;
@@ -169,45 +153,36 @@ if (isset($_GET['edit'])) {
             font-size: 1.8rem;
             margin-bottom: 30px;
         }
-
         .card-form {
             background: linear-gradient(145deg, #804A8A33, #3A035366);
-            border: 1px solid rgba(245, 158, 81, 0.2);
+            border: 1px solid rgba(245,158,81,0.2);
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 30px;
         }
-
         .form-label {
             color: var(--accent-light);
             font-weight: 500;
         }
-
-        .form-control,
-        .form-select {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(248, 210, 153, 0.3);
+        .form-control, .form-select {
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid rgba(248,210,153,0.3);
             color: white;
             border-radius: 8px;
         }
-
         .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255,255,255,0.4);
         }
-
-        .form-control:focus,
-        .form-select:focus {
-            background-color: rgba(255, 255, 255, 0.15);
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(255,255,255,0.15);
             border-color: var(--accent);
             color: white;
-            box-shadow: 0 0 0 0.2rem rgba(245, 158, 81, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(245,158,81,0.25);
         }
-
         .form-select option {
             background-color: var(--primary);
             color: white;
         }
-
         .btn-submit {
             background: linear-gradient(90deg, #F8D299, #F59E51);
             border: none;
@@ -217,37 +192,40 @@ if (isset($_GET['edit'])) {
             padding: 10px 24px;
             transition: opacity 0.2s;
         }
-
         .btn-submit:hover {
             opacity: 0.85;
             color: var(--primary);
         }
-
         .table {
             color: white;
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: transparent;
+            --bs-table-hover-bg: rgba(255,255,255,0.05);
+            --bs-table-color: white;
+            --bs-table-border-color: rgba(255,255,255,0.05);
         }
-
+        .table > :not(caption) > * > * {
+            background-color: transparent;
+            color: white;
+        }
         .table thead th {
-            background: rgba(245, 158, 81, 0.1);
-            border-color: rgba(245, 158, 81, 0.2);
+            background: rgba(245,158,81,0.1) !important;
+            border-color: rgba(245,158,81,0.2);
             color: var(--accent);
         }
-
         .table td {
-            border-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255,255,255,0.05);
             vertical-align: middle;
         }
-
         .badge-genre {
-            background: rgba(245, 158, 81, 0.2);
+            background: rgba(245,158,81,0.2);
             color: var(--accent);
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.75rem;
         }
-
         .btn-edit {
-            background: rgba(245, 158, 81, 0.2);
+            background: rgba(245,158,81,0.2);
             color: var(--accent);
             border: none;
             border-radius: 6px;
@@ -255,14 +233,12 @@ if (isset($_GET['edit'])) {
             font-size: 0.85rem;
             text-decoration: none;
         }
-
         .btn-edit:hover {
-            background: rgba(245, 158, 81, 0.4);
+            background: rgba(245,158,81,0.4);
             color: var(--accent);
         }
-
         .btn-delete {
-            background: rgba(220, 53, 69, 0.2);
+            background: rgba(220,53,69,0.2);
             color: #ff6b7a;
             border: none;
             border-radius: 6px;
@@ -270,23 +246,20 @@ if (isset($_GET['edit'])) {
             font-size: 0.85rem;
             text-decoration: none;
         }
-
         .btn-delete:hover {
-            background: rgba(220, 53, 69, 0.4);
+            background: rgba(220,53,69,0.4);
             color: #ff6b7a;
         }
-
         .movie-poster-thumb {
             width: 45px;
             height: 60px;
             object-fit: cover;
             border-radius: 4px;
         }
-
         .no-poster-thumb {
             width: 45px;
             height: 60px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             border-radius: 4px;
             display: flex;
             align-items: center;
@@ -295,9 +268,7 @@ if (isset($_GET['edit'])) {
         }
     </style>
 </head>
-
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="/e-ticket_cinema/admin/index.php" class="sidebar-brand">⚙️ Admin Panel</a>
         <ul class="sidebar-menu">
@@ -311,7 +282,6 @@ if (isset($_GET['edit'])) {
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <h1 class="page-title">🎬 Movies</h1>
 
@@ -319,14 +289,13 @@ if (isset($_GET['edit'])) {
             <div class="alert border-0 mb-4" style="background-color: rgba(25,135,84,0.2); color: #75e0a7;" id="successAlert">
                 ✅
                 <?php
-                if ($_GET['success'] === 'added') echo 'Film berhasil ditambahkan!';
-                if ($_GET['success'] === 'updated') echo 'Film berhasil diupdate!';
-                if ($_GET['success'] === 'deleted') echo 'Film berhasil dihapus!';
+                    if ($_GET['success'] === 'added') echo 'Film berhasil ditambahkan!';
+                    if ($_GET['success'] === 'updated') echo 'Film berhasil diupdate!';
+                    if ($_GET['success'] === 'deleted') echo 'Film berhasil dihapus!';
                 ?>
             </div>
         <?php endif; ?>
 
-        <!-- Form Tambah / Edit -->
         <div class="card-form">
             <h5 style="color: var(--accent-light); margin-bottom: 20px;">
                 <?= $edit_movie ? '✏️ Edit Movie' : '➕ Add New Movie' ?>
@@ -350,7 +319,7 @@ if (isset($_GET['edit'])) {
                             $genres = ['Action', 'Adventure', 'Animation', 'Comedy', 'Drama', 'Horror', 'Romance', 'Sci-Fi', 'Thriller'];
                             foreach ($genres as $g):
                             ?>
-                                <option value="<?= $g ?>" <?= ($edit_movie['genre'] ?? '') === $g ? 'selected' : '' ?>><?= $g ?></option>
+                            <option value="<?= $g ?>" <?= ($edit_movie['genre'] ?? '') === $g ? 'selected' : '' ?>><?= $g ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -383,7 +352,6 @@ if (isset($_GET['edit'])) {
             </form>
         </div>
 
-        <!-- Tabel Film -->
         <div style="background: linear-gradient(145deg, #804A8A33, #3A035333); border-radius: 12px; overflow: hidden;">
             <table class="table">
                 <thead>
@@ -398,28 +366,28 @@ if (isset($_GET['edit'])) {
                 </thead>
                 <tbody>
                     <?php foreach ($movies as $movie): ?>
-                        <tr>
-                            <td>
-                                <?php if ($movie['poster'] && file_exists('../assets/img/' . $movie['poster'])): ?>
-                                    <img src="/e-ticket_cinema/assets/img/<?= $movie['poster'] ?>" class="movie-poster-thumb">
-                                <?php else: ?>
-                                    <div class="no-poster-thumb">🎬</div>
-                                <?php endif; ?>
-                            </td>
-                            <td><?= $movie['title'] ?></td>
-                            <td><span class="badge-genre"><?= $movie['genre'] ?></span></td>
-                            <td><?= $movie['duration'] ?> min</td>
-                            <td><?= $movie['release_date'] ?></td>
-                            <td class="d-flex gap-2">
-                                <a href="movies.php?edit=<?= $movie['movie_id'] ?>" class="btn-edit">✏️ Edit</a>
-                                <a href="movies.php?delete=<?= $movie['movie_id'] ?>" class="btn-delete" onclick="return confirm('Hapus film ini?')">🗑️ Delete</a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <?php if ($movie['poster'] && file_exists('../assets/img/' . $movie['poster'])): ?>
+                                <img src="/e-ticket_cinema/assets/img/<?= $movie['poster'] ?>" class="movie-poster-thumb">
+                            <?php else: ?>
+                                <div class="no-poster-thumb">🎬</div>
+                            <?php endif; ?>
+                        </td>
+                        <td><?= $movie['title'] ?></td>
+                        <td><span class="badge-genre"><?= $movie['genre'] ?></span></td>
+                        <td><?= $movie['duration'] ?> min</td>
+                        <td><?= $movie['release_date'] ?></td>
+                        <td class="d-flex gap-2">
+                            <a href="movies.php?edit=<?= $movie['movie_id'] ?>" class="btn-edit">✏️ Edit</a>
+                            <a href="movies.php?delete=<?= $movie['movie_id'] ?>" class="btn-delete" onclick="return confirm('Hapus film ini?')">🗑️ Delete</a>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
                     <?php if (empty($movies)): ?>
-                        <tr>
-                            <td colspan="6" class="text-center" style="color: rgba(255,255,255,0.4); padding: 30px;">No movies yet</td>
-                        </tr>
+                    <tr>
+                        <td colspan="6" class="text-center" style="color: rgba(255,255,255,0.4); padding: 30px;">No movies yet</td>
+                    </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -438,5 +406,4 @@ if (isset($_GET['edit'])) {
         }, 3000);
     </script>
 </body>
-
 </html>

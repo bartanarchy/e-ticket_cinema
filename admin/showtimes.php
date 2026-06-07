@@ -7,6 +7,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
+// DELETE
 if (isset($_GET['delete'])) {
     $stmt = $pdo->prepare("DELETE FROM showtimes WHERE showtime_id = ?");
     $stmt->execute([$_GET['delete']]);
@@ -14,6 +15,7 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
+// INSERT
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'add') {
     $stmt = $pdo->prepare("INSERT INTO showtimes (movie_id, date, time, hall_number, price) VALUES (?, ?, ?, ?, ?)");
     $stmt->execute([$_POST['movie_id'], $_POST['date'], $_POST['time'], $_POST['hall_number'], $_POST['price']]);
@@ -21,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'add') {
     exit;
 }
 
+// UPDATE
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'edit') {
     $stmt = $pdo->prepare("UPDATE showtimes SET movie_id=?, date=?, time=?, hall_number=?, price=? WHERE showtime_id=?");
     $stmt->execute([$_POST['movie_id'], $_POST['date'], $_POST['time'], $_POST['hall_number'], $_POST['price'], $_POST['showtime_id']]);
@@ -162,9 +165,18 @@ if (isset($_GET['edit'])) {
         }
         .table {
             color: white;
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: transparent;
+            --bs-table-hover-bg: rgba(255,255,255,0.05);
+            --bs-table-color: white;
+            --bs-table-border-color: rgba(255,255,255,0.05);
+        }
+        .table > :not(caption) > * > * {
+            background-color: transparent;
+            color: white;
         }
         .table thead th {
-            background: rgba(245,158,81,0.1);
+            background: rgba(245,158,81,0.1) !important;
             border-color: rgba(245,158,81,0.2);
             color: var(--accent);
         }
@@ -201,7 +213,6 @@ if (isset($_GET['edit'])) {
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="/e-ticket_cinema/admin/index.php" class="sidebar-brand">⚙️ Admin Panel</a>
         <ul class="sidebar-menu">
@@ -215,7 +226,6 @@ if (isset($_GET['edit'])) {
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <h1 class="page-title">🕐 Showtimes</h1>
 
@@ -230,7 +240,6 @@ if (isset($_GET['edit'])) {
             </div>
         <?php endif; ?>
 
-        <!-- ini form buat edit -->
         <div class="card-form">
             <h5 style="color: var(--accent-light); margin-bottom: 20px;">
                 <?= $edit_showtime ? '✏️ Edit Showtime' : '➕ Add New Showtime' ?>
@@ -286,7 +295,6 @@ if (isset($_GET['edit'])) {
             </form>
         </div>
 
-        <!-- ini Tabel Showtimes -->
         <div style="background: linear-gradient(145deg, #804A8A33, #3A035333); border-radius: 12px; overflow: hidden;">
             <table class="table">
                 <thead>

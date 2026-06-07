@@ -17,6 +17,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +42,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
             width: 250px;
             min-height: 100vh;
             background: linear-gradient(180deg, #3A0353, #1a0230);
-            border-right: 1px solid rgba(245,158,81,0.2);
+            border-right: 1px solid rgba(245, 158, 81, 0.2);
             position: fixed;
             top: 0;
             left: 0;
@@ -55,7 +56,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
             font-weight: 700;
             font-size: 1.3rem;
             padding: 0 20px 20px;
-            border-bottom: 1px solid rgba(245,158,81,0.2);
+            border-bottom: 1px solid rgba(245, 158, 81, 0.2);
             display: block;
             text-decoration: none;
         }
@@ -69,7 +70,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
         .sidebar-menu li a {
             display: block;
             padding: 12px 20px;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             transition: all 0.2s;
             font-weight: 500;
@@ -77,7 +78,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
 
         .sidebar-menu li a:hover,
         .sidebar-menu li a.active {
-            background: rgba(245,158,81,0.1);
+            background: rgba(245, 158, 81, 0.1);
             color: var(--accent);
             border-left: 3px solid var(--accent);
         }
@@ -120,7 +121,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
         }
 
         .stat-label {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.6);
             font-size: 0.9rem;
         }
 
@@ -132,23 +133,32 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
 
         .table {
             color: white;
-            margin: 0;
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: transparent;
+            --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+            --bs-table-color: white;
+            --bs-table-border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .table> :not(caption)>*>* {
+            background-color: transparent;
+            color: white;
         }
 
         .table thead th {
-            background: rgba(245,158,81,0.1);
-            border-color: rgba(245,158,81,0.2);
+            background: rgba(245, 158, 81, 0.1) !important;
+            border-color: rgba(245, 158, 81, 0.2);
             color: var(--accent);
             font-weight: 600;
         }
 
         .table td {
-            border-color: rgba(255,255,255,0.05);
+            border-color: rgba(255, 255, 255, 0.05);
             vertical-align: middle;
         }
 
         .badge-genre {
-            background: rgba(245,158,81,0.2);
+            background: rgba(245, 158, 81, 0.2);
             color: var(--accent);
             padding: 4px 10px;
             border-radius: 20px;
@@ -156,6 +166,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
         }
     </style>
 </head>
+
 <body>
     <div class="sidebar">
         <a href="/e-ticket_cinema/admin/index.php" class="sidebar-brand">⚙️ Admin Panel</a>
@@ -223,20 +234,20 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
                     $movies = $pdo->query("SELECT * FROM movies ORDER BY release_date DESC LIMIT 5")->fetchAll();
                     foreach ($movies as $movie):
                     ?>
-                    <tr>
-                        <td><?= $movie['title'] ?></td>
-                        <td><span class="badge-genre"><?= $movie['genre'] ?></span></td>
-                        <td><?= $movie['duration'] ?> min</td>
-                        <td><?= $movie['release_date'] ?></td>
-                        <td>
-                            <a href="movies.php" class="btn btn-sm" style="background: rgba(245,158,81,0.2); color: var(--accent); border: none;">Manage</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><?= $movie['title'] ?></td>
+                            <td><span class="badge-genre"><?= $movie['genre'] ?></span></td>
+                            <td><?= $movie['duration'] ?> min</td>
+                            <td><?= $movie['release_date'] ?></td>
+                            <td>
+                                <a href="movies.php" class="btn btn-sm" style="background: rgba(245,158,81,0.2); color: var(--accent); border: none;">Manage</a>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                     <?php if (empty($movies)): ?>
-                    <tr>
-                        <td colspan="5" class="text-center" style="color: rgba(255,255,255,0.4); padding: 30px;">No movies yet</td>
-                    </tr>
+                        <tr>
+                            <td colspan="5" class="text-center" style="color: rgba(255,255,255,0.4); padding: 30px;">No movies yet</td>
+                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -245,4 +256,5 @@ $total_revenue = $pdo->query("SELECT SUM(total_amount) FROM transactions")->fetc
 
     <script src="/e-ticket_cinema/assets/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -7,7 +7,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-// DELETE
 if (isset($_GET['delete'])) {
     $stmt = $pdo->prepare("DELETE FROM users WHERE user_id = ? AND role != 'admin'");
     $stmt->execute([$_GET['delete']]);
@@ -15,12 +14,11 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
-// GET semua users
 $users = $pdo->query("
     SELECT users.*, COUNT(transactions.transaction_id) as total_transactions
     FROM users
     LEFT JOIN transactions ON users.user_id = transactions.user_id
-    GROUP BY users.user_id
+    GROUP BY users.user_id, users.name, users.email, users.role, users.created_at
     ORDER BY users.created_at DESC
 ")->fetchAll();
 ?>
@@ -99,9 +97,18 @@ $users = $pdo->query("
         }
         .table {
             color: white;
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: transparent;
+            --bs-table-hover-bg: rgba(255,255,255,0.05);
+            --bs-table-color: white;
+            --bs-table-border-color: rgba(255,255,255,0.05);
+        }
+        .table > :not(caption) > * > * {
+            background-color: transparent;
+            color: white;
         }
         .table thead th {
-            background: rgba(245,158,81,0.1);
+            background: rgba(245,158,81,0.1) !important;
             border-color: rgba(245,158,81,0.2);
             color: var(--accent);
         }
@@ -151,7 +158,6 @@ $users = $pdo->query("
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
         <a href="/e-ticket_cinema/admin/index.php" class="sidebar-brand">⚙️ Admin Panel</a>
         <ul class="sidebar-menu">
@@ -165,7 +171,6 @@ $users = $pdo->query("
         </ul>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <h1 class="page-title">👥 Users</h1>
 
@@ -175,7 +180,6 @@ $users = $pdo->query("
             </div>
         <?php endif; ?>
 
-        <!-- Tabel Users -->
         <div style="background: linear-gradient(145deg, #804A8A33, #3A035333); border-radius: 12px; overflow: hidden;">
             <table class="table">
                 <thead>
