@@ -8,8 +8,21 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 if (isset($_GET['delete'])) {
-    $stmt = $pdo->prepare("DELETE FROM users WHERE user_id = ? AND role != 'admin'");
-    $stmt->execute([$_GET['delete']]);
+    $user_id = $_GET['delete'];
+    
+    // Hapus tickets yang terhubung ke transaksi user ini
+    $pdo->prepare("
+        DELETE tickets FROM tickets 
+        INNER JOIN transactions ON tickets.transaction_id = transactions.transaction_id 
+        WHERE transactions.user_id = ?
+    ")->execute([$user_id]);
+    
+    // Hapus transaksi user ini
+    $pdo->prepare("DELETE FROM transactions WHERE user_id = ?")->execute([$user_id]);
+    
+    // Hapus user
+    $pdo->prepare("DELETE FROM users WHERE user_id = ? AND role != 'admin'")->execute([$user_id]);
+    
     header('Location: users.php?success=deleted');
     exit;
 }
